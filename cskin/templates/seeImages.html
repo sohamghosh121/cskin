@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% block head %}
+
+<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+<link href="{% static "css/seeImages.css" %}" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h1> All Patient Images </h1>
+
+	<div class="row jumbotron pictures_display">
+		{% for p in patients %}
+		<h3> {{ p.name }} </h3>
+			<div class="images" patient-email="{{ p.email }}">
+				{% for i in images|get_item:p.email %}
+					<figure>
+						<img src="{{ i.image_file }}" />
+						<figcaption> {{ i.date_taken }} </figcaption>
+					</figure>
+				{% endfor %}
+			</div>
+			<hr>
+		{% endfor %}
+	</div>
+</div>
+
+
+{% endblock %}

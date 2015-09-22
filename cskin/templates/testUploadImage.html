@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% block head %}
+
+<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<form enctype="multipart/form-data" class="form-imageupload" action="/processImageUpload" method="post">
+	{% csrf_token %}
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<input name="patientEmail" type="email" id="patientEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+	<input name="image" type="file" id="inputPassword" class="form-control" required="" accept="image">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+</form>
+
+</div>
+
+
+{% endblock %}

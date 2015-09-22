@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% block head %}
+
+<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+<link href="{% static "css/signin.css" %}" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<form class="form-signin" action="/processLogin" method="post">
+	{% csrf_token %}
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<input name="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+	<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
+
+</div>
+
+
+{% endblock %}
