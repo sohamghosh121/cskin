@@ -16,7 +16,7 @@
 			<div class="images" patient-email="{{ p.email }}">
 				{% for i in images|get_item:p.email %}
 					<figure>
-						<img src="{{ i.image_file }}" />
+						<img src="{{ i.image_file.url }}" />
 						<figcaption> {{ i.date_taken }} </figcaption>
 					</figure>
 				{% endfor %}

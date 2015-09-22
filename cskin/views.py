@@ -4,8 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from cskin.models import Patient, Image
 from django.template.defaulttags import register
+from boto.s3.key import Key
+from boto.s3.connection import S3Connection
 
+import os
 import datetime
+import settings
 
 
 @register.filter
@@ -47,6 +51,9 @@ def processImageUpload(request):
 	# date_taken = request.POST.get('dateTaken')
 	image = request.FILES.get('image')
 	patient = Patient.objects.get(email=patientEmail)
+	# conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+	# bucket = Bucket(conn, settings.S3_BUCKET_NAME)
+	# k = Key(bucket)
 	new_image = Image.objects.create(date_taken=datetime.datetime.today(), patient=patient, image_file=image)
 	return HttpResponse('saved')
 
