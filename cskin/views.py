@@ -47,14 +47,13 @@ def processLogout(request):
 
 
 def processImageUpload(request):
-	patientEmail = request.POST.get('patientEmail')
-	# date_taken = request.POST.get('dateTaken')
+	patientEmail = request.POST.get('id')
+	date_taken = request.POST.get('dateTaken')
 	image = request.FILES.get('image')
 	patient = Patient.objects.get(email=patientEmail)
-	# conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-	# bucket = Bucket(conn, settings.S3_BUCKET_NAME)
-	# k = Key(bucket)
-	new_image = Image.objects.create(date_taken=datetime.datetime.today(), patient=patient, image_file=image)
+	session = Session.objects.create(patient=patient, date=date_taken)
+	# TODO: put code here to process image
+	new_image = Image.objects.create(session=session, image_file=image)
 	return HttpResponse('saved')
 
 

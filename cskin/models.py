@@ -6,7 +6,12 @@ class Patient(models.Model):
     email = models.EmailField(unique=True)
 
 
-class Image(models.Model):
+class Session(models.Model):
     patient = models.ForeignKey(Patient, related_name='patient')
-    date_taken = models.DateTimeField(auto_now=True)
+    details = models.TextField()
+    date = models.DateTimeField(auto_now=True)
+
+
+class Image(models.Model):
+    session = models.ForeignKey(Session, related_name='session')
     image_file = models.ImageField(upload_to='patient_images/')
