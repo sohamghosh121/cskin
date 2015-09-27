@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from cskin.models import Patient, Image
+from cskin.models import Patient, Image, Session
 from django.template.defaulttags import register
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
@@ -47,13 +47,17 @@ def processLogout(request):
 
 
 def processImageUpload(request):
-	patientEmail = request.POST.get('id')
+	patientEmail = request.POST.get('patientEmail')
 	date_taken = request.POST.get('dateTaken')
-	image = request.FILES.get('image')
+	numberOfImages = int(request.POST.get('nImages'))
 	patient = Patient.objects.get(email=patientEmail)
 	session = Session.objects.create(patient=patient, date=date_taken)
-	# TODO: put code here to process image
-	new_image = Image.objects.create(session=session, image_file=image)
+
+	for i in range(numberOfImages):
+		imagekey = 'image_%d' % i
+		image = request.FILES.get(imagekey)
+		# TODO: put code here to process image
+		new_image = Image.objects.create(session=session, image_file=image)
 	return HttpResponse('saved')
 
 
@@ -67,9 +71,12 @@ def seeImages(request):
 		Tool for admin to see images for user, chronologically ordered
 	"""
 	patients = Patient.objects.all();
-	images = {p.email: Image.objects.filter(patient=p) for p in patients}
+	sessions = {p.email: Session.objects.filter(patient=p) for p in patients}
+	allSessions = Session.objects.all()
+	images = {s.id: Image.objects.filter(session=s) for s in allSessions}
 	context = {}
 	context['patients'] = patients
+	context['sessions'] = sessions
 	context['images'] = images;
 	# import pdb
 	# pdb.set_trace()

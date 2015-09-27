@@ -14,10 +14,12 @@
 		{% for p in patients %}
 		<h3> {{ p.name }} </h3>
 			<div class="images" patient-email="{{ p.email }}">
-				{% for i in images|get_item:p.email %}
+				{% for s in sessions|get_item:p.email %}
 					<figure>
-						<img src="{{ i.image_file.url }}" />
-						<figcaption> {{ i.date_taken }} </figcaption>
+						{% for i in images|get_item:s.id %}
+							<img src="{{ i.image_file.url }}" />
+						{% endfor %}
+						<figcaption> {{ s.date }} - {{ s.details }} </figcaption>
 					</figure>
 				{% endfor %}
 			</div>

@@ -12,7 +12,10 @@
 	{% csrf_token %}
 	<h2 class="form-signin-heading">Test uploading images</h2>
 	<input name="patientEmail" type="email" id="patientEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-	<input name="image" type="file" id="inputPassword" class="form-control" required="" accept="image">
+	<input name="image_0" type="file" class="form-control" required="" accept="image" />
+	<input name="image_1" type="file" class="form-control" required="" accept="image" />
+	<input name="image_2" type="file" class="form-control" required="" accept="image" />
+	<input name="nImages" value="3" />
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
 </form>
 

@@ -12,6 +12,10 @@ class Session(models.Model):
     date = models.DateTimeField(auto_now=True)
 
 
+def image_directory_path(instance, filename):
+	return 'patient_images/sessionid_{0}/{1}'.format(instance.session.id, filename)	
+
+
 class Image(models.Model):
     session = models.ForeignKey(Session, related_name='session')
-    image_file = models.ImageField(upload_to='patient_images/')
+    image_file = models.ImageField(upload_to=image_directory_path)
