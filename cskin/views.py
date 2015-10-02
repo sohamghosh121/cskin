@@ -52,13 +52,13 @@ def processImageUpload(request):
 	print 'got patient email: '+patientEmail
 	# date_taken = request.POST.get('dateTaken')
 	numberOfImages = int(request.POST.get('nImages'))
-	print 'got num images: '+numberOfImages
+	print 'got num images: '+ str(numberOfImages)
 	patient = Patient.objects.get(email=patientEmail)
-	print 'got patient: '+patient.id
+	print 'got patient: '+ str(patient.id)
 	session = Session.objects.create(patient=patient, date=date_taken)
 	print 'created session'
 	for i in range(numberOfImages):
-		print 'getting image: ' + i
+		print 'getting image: ' + str(i)
 		imagekey = 'image_%d' % i
 		image = request.FILES.get(imagekey)
 		# TODO: put code here to process image
