@@ -51,7 +51,7 @@ def processImageUpload(request):
 	patientEmail = request.POST.get('patientEmail')
 	print 'got patient email: '+patientEmail
 	# date_taken = request.POST.get('dateTaken')
-	date_taken = datetime.now()
+	date_taken = datetime.datetime.now()
 	numberOfImages = int(request.POST.get('nImages'))
 	print 'got num images: '+ str(numberOfImages)
 	patient = Patient.objects.get(email=patientEmail)
