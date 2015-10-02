@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -87,17 +88,8 @@ WSGI_APPLICATION = 'cskin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cskin',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
-    }
-}
-
+DATABASES = {}
+DATABASES['default'] =  dj_database_url.config(default='mysql://bb376c6a5b5258:58cecba8@us-cdbr-iron-east-02.cleardb.net/heroku_791ecc3a262c4b6')
 
 LOGIN_URL = '/login'
 

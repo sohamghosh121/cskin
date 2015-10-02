@@ -47,17 +47,23 @@ def processLogout(request):
 
 
 def processImageUpload(request):
+	print('here')
 	patientEmail = request.POST.get('patientEmail')
-	date_taken = request.POST.get('dateTaken')
+	print 'got patient email: '+patientEmail
+	# date_taken = request.POST.get('dateTaken')
 	numberOfImages = int(request.POST.get('nImages'))
+	print 'got num images: '+numberOfImages
 	patient = Patient.objects.get(email=patientEmail)
+	print 'got patient: '+patient.id
 	session = Session.objects.create(patient=patient, date=date_taken)
-
+	print 'created session'
 	for i in range(numberOfImages):
+		print 'getting image: ' + i
 		imagekey = 'image_%d' % i
 		image = request.FILES.get(imagekey)
 		# TODO: put code here to process image
 		new_image = Image.objects.create(session=session, image_file=image)
+		print 'got image'
 	return HttpResponse('saved')
 
 
