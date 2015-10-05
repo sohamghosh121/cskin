@@ -52,6 +52,8 @@ def processLogout(request):
 def processImageUpload(request):
 	print '---------- here'
 	patientEmail = request.POST.get('patientEmail')
+	print request.POST.items()
+	print settings.DATE_FORMAT
 	date_taken = request.POST.get('dateTaken')
 	date_taken = datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
 	print 'date taken was ok'
