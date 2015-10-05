@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import os
 import datetime
-import prod_settings as settings
+import settings as settings
 import logging
 
 
@@ -73,8 +73,9 @@ def processImageUpload(request):
     return HttpResponse('saved')
 
 
+@csrf_exempt
 def getPatientImages(request):
-    patientEmail = request.POST.get('patientEmail')
+    patientEmail = request.GET.get('patientEmail')
     response = []
     patient = Patient.objects.get(email=patientEmail)
     sessions = Session.objects.filter(patient=patient)
