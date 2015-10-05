@@ -18,12 +18,13 @@ import logging
 def get_item(dictionary, key):
     return dictionary.get(key)
 
+
 def healthCheck(request):
-	return HttpResponse('It\'s all good!')
+    return HttpResponse('It\'s all good!')
 
 
 def loginView(request):
-	return render(request, 'templates/login.html')
+    return render(request, 'templates/login.html')
 
 
 def processLogin(request):
@@ -36,10 +37,10 @@ def processLogin(request):
             return redirect(to='/seeImages')
             # Redirect to a success page.
         else:
-        	return HttpResponse('disabled account')
+            return HttpResponse('disabled account')
             # Return a 'disabled account' error message
     else:
-    	return HttpResponse('invalid')
+        return HttpResponse('invalid')
         # Return an 'invalid login' error message.
 
 
@@ -49,55 +50,59 @@ def processLogout(request):
 
 @csrf_exempt
 def processImageUpload(request):
-	patientEmail = request.POST.get('patientEmail')
-	date_taken = request.POST.get('dateTaken')
-	date_taken = datetime.datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
-	date_submission = request.POST.get('dateSubmission')
-	date_submission = datetime.datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
-	details = request.POST.get('details')
-	numberOfImages = int(request.POST.get('nImages'))
-	patient = Patient.objects.get(email=patientEmail)
-	session = Session.objects.create(patient=patient, dateTaken=date_taken, dateSubmission=date_submission, details=details)
-	for i in range(numberOfImages):
-		imagekey = 'image_%d' % i
-		image = request.FILES.get(imagekey)
-		if image:
-			new_image = Image.objects.create(session=session, image_file=image)
-		else:
-			# TODO: put code here to process image
-			raise Exception('No image provided')
-	return HttpResponse('saved')
+    patientEmail = request.POST.get('patientEmail')
+    date_taken = request.POST.get('dateTaken')
+    date_taken = datetime.datetime.strptime(
+        date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
+    date_submission = request.POST.get('dateSubmission')
+    date_submission = datetime.datetime.strptime(
+        date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
+    details = request.POST.get('details')
+    numberOfImages = int(request.POST.get('nImages'))
+    patient = Patient.objects.get(email=patientEmail)
+    session = Session.objects.create(
+        patient=patient, dateTaken=date_taken, dateSubmission=date_submission, details=details)
+    for i in range(numberOfImages):
+        imagekey = 'image_%d' % i
+        image = request.FILES.get(imagekey)
+        if image:
+            new_image = Image.objects.create(session=session, image_file=image)
+        else:
+            # TODO: put code here to process image
+            raise Exception('No image provided')
+    return HttpResponse('saved')
 
 
 def getPatientImages(request):
-	patientEmail = request.GET.get('patientEmail')
-	response = []
-	patient = Patient.objects.get(email=patientEmail)
-	sessions = Session.objects.filter(patient=patient)
-	for i in range(len(sessions)):
-		s = sessions[i]
-		images = Image.objects.filter(session=s)
-		response.append({'dateTaken': datetime.datetime.strftime(s.dateTaken, settings.DATE_FORMAT), 'dateSubmission': datetime.datetime.strftime(s.dateSubmission, settings.DATE_FORMAT), 'details': s.details, 'images': [img.image_file.url for img in images]})
-	return JsonResponse(response, safe=False)
+    patientEmail = request.POST.get('patientEmail')
+    response = []
+    patient = Patient.objects.get(email=patientEmail)
+    sessions = Session.objects.filter(patient=patient)
+    for i in range(len(sessions)):
+        s = sessions[i]
+        images = Image.objects.filter(session=s)
+        response.append({'dateTaken': datetime.datetime.strftime(s.dateTaken, settings.DATE_FORMAT), 'dateSubmission': datetime.datetime.strftime(
+            s.dateSubmission, settings.DATE_FORMAT), 'details': s.details, 'images': [img.image_file.url for img in images]})
+    return JsonResponse(response, safe=False)
 
 
 def testUploadImage(request):
-	return render(request, 'templates/testUploadImage.html')
+    return render(request, 'templates/testUploadImage.html')
 
 
 @login_required
 def seeImages(request):
-	"""
-		Tool for admin to see images for user, chronologically ordered
-	"""
-	patients = Patient.objects.all();
-	sessions = {p.email: Session.objects.filter(patient=p) for p in patients}
-	allSessions = Session.objects.all()
-	images = {s.id: Image.objects.filter(session=s) for s in allSessions}
-	context = {}
-	context['patients'] = patients
-	context['sessions'] = sessions
-	context['images'] = images;
-	# import pdb
-	# pdb.set_trace()
-	return render(request, 'templates/seeImages.html', context)
+    """
+            Tool for admin to see images for user, chronologically ordered
+    """
+    patients = Patient.objects.all()
+    sessions = {p.email: Session.objects.filter(patient=p) for p in patients}
+    allSessions = Session.objects.all()
+    images = {s.id: Image.objects.filter(session=s) for s in allSessions}
+    context = {}
+    context['patients'] = patients
+    context['sessions'] = sessions
+    context['images'] = images
+    # import pdb
+    # pdb.set_trace()
+    return render(request, 'templates/seeImages.html', context)
