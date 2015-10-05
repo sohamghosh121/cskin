@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^processLogin', views.processLogin),
     url(r'^processLogout', views.processLogout),
     url(r'^processImageUpload', views.processImageUpload),
-    url(r'^testUploadImage', views.testUploadImage)
+    url(r'^testUploadImage', views.testUploadImage),
+    url(r'^getPatientImages', views.getPatientImages)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
