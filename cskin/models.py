@@ -9,7 +9,8 @@ class Patient(models.Model):
 class Session(models.Model):
     patient = models.ForeignKey(Patient, related_name='patient')
     details = models.TextField()
-    date = models.DateTimeField(auto_now=True)
+    dateSubmission = models.DateTimeField(auto_now=True)
+    dateTaken = models.DateTimeField(auto_now=True)
 
 
 def image_directory_path(instance, filename):

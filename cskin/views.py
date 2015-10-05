@@ -10,7 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 import os
 import datetime
-import settings
+import prod_settings as settings
+
 
 
 @register.filter
@@ -48,28 +49,23 @@ def processLogout(request):
 
 @csrf_exempt
 def processImageUpload(request):
-	print('here')
-	print request.FILES.items()
-	print request.POST.items()
 	patientEmail = request.POST.get('patientEmail')
-	print 'got patient email: '+patientEmail
-	# date_taken = request.POST.get('dateTaken')
-	date_taken = datetime.datetime.now()
+	date_taken = request.POST.get('dateTaken')
+	date_taken = datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
+	date_submission = request.POST.get('dateSubmission')
+	date_submission = datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
+	details = request.POST.get('details')
 	numberOfImages = int(request.POST.get('nImages'))
-	print 'got num images: '+ str(numberOfImages)
 	patient = Patient.objects.get(email=patientEmail)
-	print 'got patient: '+ str(patient.id)
-	session = Session.objects.create(patient=patient, date=date_taken)
-	print 'created session'
+	session = Session.objects.create(patient=patient, dateTaken=date_taken, dateSubmission=date_submission, details=details)
 	for i in range(numberOfImages):
-		print 'getting image: ' + str(i)
 		imagekey = 'image_%d' % i
 		image = request.FILES.get(imagekey)
-		if not image:
-			print 'there was no image!'
-		# TODO: put code here to process image
-		new_image = Image.objects.create(session=session, image_file=image)
-		print 'got image'
+		if image:
+			new_image = Image.objects.create(session=session, image_file=image)
+		else:
+			# TODO: put code here to process image
+			raise Exception('No image provided')
 	return HttpResponse('saved')
 
 
