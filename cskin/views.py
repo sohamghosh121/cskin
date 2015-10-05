@@ -6,6 +6,7 @@ from cskin.models import Patient, Image, Session
 from django.template.defaulttags import register
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
+from django.views.decorators.csrf import csrf_exempt
 
 import os
 import datetime
@@ -45,7 +46,7 @@ def processLogout(request):
     logout(request)
 
 
-
+@csrf_exempt
 def processImageUpload(request):
 	print('here')
 	patientEmail = request.POST.get('patientEmail')
