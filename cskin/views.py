@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 import datetime
 import prod_settings as settings
+import logging
 
 
 
@@ -49,11 +50,14 @@ def processLogout(request):
 
 @csrf_exempt
 def processImageUpload(request):
+	print '---------- here'
 	patientEmail = request.POST.get('patientEmail')
 	date_taken = request.POST.get('dateTaken')
 	date_taken = datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
+	print 'date taken was ok'
 	date_submission = request.POST.get('dateSubmission')
 	date_submission = datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
+	print 'date submission was ok'
 	details = request.POST.get('details')
 	numberOfImages = int(request.POST.get('nImages'))
 	patient = Patient.objects.get(email=patientEmail)
@@ -65,6 +69,7 @@ def processImageUpload(request):
 			new_image = Image.objects.create(session=session, image_file=image)
 		else:
 			# TODO: put code here to process image
+			print 'exception'
 			raise Exception('No image provided')
 	return HttpResponse('saved')
 
