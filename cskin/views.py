@@ -49,6 +49,8 @@ def processLogout(request):
 @csrf_exempt
 def processImageUpload(request):
 	print('here')
+	print request.FILES.items()
+	print request.POST.items()
 	patientEmail = request.POST.get('patientEmail')
 	print 'got patient email: '+patientEmail
 	# date_taken = request.POST.get('dateTaken')
