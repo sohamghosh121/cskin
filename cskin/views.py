@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResIponse
 from django.shortcuts import render, redirect
 from cskin.models import Patient, Image, Session
 from django.template.defaulttags import register
@@ -75,6 +75,7 @@ def getPatientImages(request):
 	patient = Patient.objects.get(email=patientEmail)
 	sessions = Session.objects.filter(patient=patient)
 	for i in range(len(sessions)):
+		s = sessions[i]
 		images = Image.objects.filter(session=s)
 		response[i] = {'dateTaken': s.dateTaken, 'dateSubmission': s.dateSubmission, 'details': s.details, 'images': [i.image_file.url for i in images]}
 	return JsonReponse(response, safe=False)
