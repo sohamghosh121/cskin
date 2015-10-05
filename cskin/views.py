@@ -55,10 +55,10 @@ def processImageUpload(request):
 	print request.POST.items()
 	print settings.DATE_FORMAT
 	date_taken = request.POST.get('dateTaken')
-	date_taken = datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
+	date_taken = datetime.datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
 	print 'date taken was ok'
 	date_submission = request.POST.get('dateSubmission')
-	date_submission = datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
+	date_submission = datetime.datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
 	print 'date submission was ok'
 	details = request.POST.get('details')
 	numberOfImages = int(request.POST.get('nImages'))
