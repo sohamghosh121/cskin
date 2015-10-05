@@ -75,7 +75,7 @@ def processImageUpload(request):
 
 @csrf_exempt
 def getPatientImages(request):
-    patientEmail = request.GET.get('patientEmail')
+    patientEmail = request.POST.get('patientEmail')
     response = []
     patient = Patient.objects.get(email=patientEmail)
     sessions = Session.objects.filter(patient=patient)
