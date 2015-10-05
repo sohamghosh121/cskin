@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResIponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from cskin.models import Patient, Image, Session
 from django.template.defaulttags import register
