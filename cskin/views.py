@@ -63,6 +63,8 @@ def processImageUpload(request):
 		print 'getting image: ' + str(i)
 		imagekey = 'image_%d' % i
 		image = request.FILES.get(imagekey)
+		if not image:
+			print 'there was no image!'
 		# TODO: put code here to process image
 		new_image = Image.objects.create(session=session, image_file=image)
 		print 'got image'

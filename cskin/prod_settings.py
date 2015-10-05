@@ -32,7 +32,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 SECRET_KEY = 'b+noavz-1wzea0v3jng1(c@=&h22l@go6hxt-ciu7knkgoj5&y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
