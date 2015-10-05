@@ -14,7 +14,6 @@ import prod_settings as settings
 import logging
 
 
-
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
@@ -50,16 +49,11 @@ def processLogout(request):
 
 @csrf_exempt
 def processImageUpload(request):
-	print '---------- here'
 	patientEmail = request.POST.get('patientEmail')
-	print request.POST.items()
-	print settings.DATE_FORMAT
 	date_taken = request.POST.get('dateTaken')
 	date_taken = datetime.datetime.strptime(date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
-	print 'date taken was ok'
 	date_submission = request.POST.get('dateSubmission')
 	date_submission = datetime.datetime.strptime(date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
-	print 'date submission was ok'
 	details = request.POST.get('details')
 	numberOfImages = int(request.POST.get('nImages'))
 	patient = Patient.objects.get(email=patientEmail)
@@ -71,9 +65,19 @@ def processImageUpload(request):
 			new_image = Image.objects.create(session=session, image_file=image)
 		else:
 			# TODO: put code here to process image
-			print 'exception'
 			raise Exception('No image provided')
 	return HttpResponse('saved')
+
+
+def getPatientImages(request):
+	patientEmail = request.GET.get('patientEmail')
+	response = []
+	patient = Patient.objects.get(email=patientEmail)
+	sessions = Session.objects.filter(patient=patient)
+	for i in range(len(sessions)):
+		images = Image.objects.filter(session=s)
+		response[i] = {'dateTaken': s.dateTaken, 'dateSubmission': s.dateSubmission, 'details': s.details, 'images': [i.image_file.url for i in images]}
+	return JsonReponse(response, safe=False)
 
 
 def testUploadImage(request):

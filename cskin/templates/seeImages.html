@@ -19,7 +19,7 @@
 						{% for i in images|get_item:s.id %}
 							<img src="{{ i.image_file.url }}" />
 						{% endfor %}
-						<figcaption> Date Taken: {{ s.dateTaken }}       Date Submitted: {{ s.dateSubmitted }}   Description: {{ s.details }} </figcaption>
+						<figcaption> Date Taken: {{ s.dateTaken }}       Date Submitted: {{ s.dateSubmission}}   Description: {{ s.details }} </figcaption>
 					</figure>
 				{% endfor %}
 			</div>
