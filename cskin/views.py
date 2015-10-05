@@ -77,7 +77,7 @@ def getPatientImages(request):
 	for i in range(len(sessions)):
 		s = sessions[i]
 		images = Image.objects.filter(session=s)
-		response.append({'dateTaken': s.dateTaken, 'dateSubmission': s.dateSubmission, 'details': s.details, 'images': [img.image_file.url for img in images]})
+		response.append({'dateTaken': datetime.datetime.strftime(s.dateTaken, settings.DATE_FORMAT), 'dateSubmission': datetime.datetime.strftime(s.dateSubmission, settings.DATE_FORMAT), 'details': s.details, 'images': [img.image_file.url for img in images]})
 	return JsonResponse(response, safe=False)
 
 
