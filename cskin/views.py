@@ -112,6 +112,7 @@ def processImageUpload(request):
         print i
         imagekey = 'image_%d' % i
         image = request.FILES.get(imagekey)
+        print request.FILES
         print image
         if image:
             new_image = Image.objects.create(session=session, image_file=image)
