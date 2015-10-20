@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from cskin.models import Patient, Image, Session, AppNonce
+from cskin.models import Patient, Image, Session
 from django.template.defaulttags import register
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
@@ -30,16 +30,16 @@ def loginView(request):
     return render(request, 'templates/login.html')
 
 
-def getAppNonce(request):
-	try:
-		return AppNonce.objects.get(user=request.user)
-	except AppNonce.DoesNotExist:
-		return AppNonce.objects.create(user=request.user, nonce_value=generate_nonce())
+# def getAppNonce(request):
+# 	try:
+# 		return AppNonce.objects.get(user=request.user)
+# 	except AppNonce.DoesNotExist:
+# 		return AppNonce.objects.create(user=request.user, nonce_value=generate_nonce())
 
-def generate_nonce():
-	""" Generates a random string of bytes, base64 encoded """
-	length = 32
-	return ''.join([str(random.randint(0, 9)) for i in range(length)])
+# def generate_nonce():
+# 	""" Generates a random string of bytes, base64 encoded """
+# 	length = 32
+# 	return ''.join([str(random.randint(0, 9)) for i in range(length)])
 
 
 def createUser(request):
