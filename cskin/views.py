@@ -2,11 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from cskin.models import Patient, Image, Session
+from django.contrib.auth.models import User
+from cskin.models import Patient, Image, Session, AppNonce
 from django.template.defaulttags import register
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
 from django.views.decorators.csrf import csrf_exempt
+
+import random
 
 import os
 import datetime
@@ -25,6 +28,44 @@ def healthCheck(request):
 
 def loginView(request):
     return render(request, 'templates/login.html')
+
+
+def getAppNonce(request):
+	try:
+		return AppNonce.objects.get(user=request.user)
+	except AppNonce.DoesNotExist:
+		return AppNonce.objects.create(user=request.user, nonce_value=generate_nonce())
+
+def generate_nonce():
+	""" Generates a random string of bytes, base64 encoded """
+	length = 32
+	return ''.join([str(random.randint(0, 9)) for i in range(length)])
+
+
+def createUser(request):
+	name = request.POST.get('name')
+	username = request.POST.get('username')
+	email = request.POST.get('email')
+	password = request.POST.get('password')
+	isPatient = request.POST.get('isPatient')
+	if fname and lname and username and email and password:
+		# first save as a user (for authentication)
+		user.objects.create_user(username, email, password)
+		user.name = name
+		user.save()
+		# then save as a patient (for dbm)
+		if isPatient:
+			name = fname + ' ' + lname
+			Patient.objects.create(email=email, name=name)
+		return JsonResponse({'success': True})
+	else:
+		return JsonResponse({'success': False, 'error': 'A required field was not provided'})
+
+
+def getUser(request):
+	import pdb
+	pdb.set_trace()
+	return HttpResponse('lala')
 
 
 def processLogin(request):

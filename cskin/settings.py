@@ -51,7 +51,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cskin',
-    'storages'
+    'storages',
+    'oauth2_provider',
 )
 
 MIDDLEWARE_CLASSES = (

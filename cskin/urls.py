@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^processLogout', views.processLogout),
     url(r'^processImageUpload', views.processImageUpload),
     url(r'^testUploadImage', views.testUploadImage),
-    url(r'^getPatientImages', views.getPatientImages)
+    url(r'^getPatientImages', views.getPatientImages),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

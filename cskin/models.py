@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Patient(models.Model):
     name = models.CharField(max_length=128)
@@ -20,3 +20,11 @@ def image_directory_path(instance, filename):
 class Image(models.Model):
     session = models.ForeignKey(Session, related_name='session')
     image_file = models.ImageField(upload_to=image_directory_path)
+
+
+class AppNonce(models.Model):
+	user = models.ForeignKey(User, related_name='user')
+	create_time = models.DateTimeField(auto_now=True)
+	nonce_value = last_name = models.CharField(max_length=64)
+	class Meta:
+		unique_together = (('user', 'create_time'),)
