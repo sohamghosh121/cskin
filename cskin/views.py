@@ -92,24 +92,33 @@ def processLogout(request):
 @csrf_exempt
 def processImageUpload(request):
     patientEmail = request.POST.get('patientEmail')
+    print patientEmail
     date_taken = request.POST.get('dateTaken')
+    print date_taken
     date_taken = datetime.datetime.strptime(
         date_taken, settings.DATE_FORMAT) if date_taken else datetime.datetime.now()
     date_submission = request.POST.get('dateSubmission')
     date_submission = datetime.datetime.strptime(
         date_submission, settings.DATE_FORMAT) if date_submission else datetime.datetime.now()
+    print date_submission
     details = request.POST.get('details')
+    print details
     numberOfImages = int(request.POST.get('nImages'))
+    print numberOfImages
     patient = Patient.objects.get(email=patientEmail)
     session = Session.objects.create(
         patient=patient, dateTaken=date_taken, dateSubmission=date_submission, details=details)
     for i in range(numberOfImages):
+        print i
         imagekey = 'image_%d' % i
         image = request.FILES.get(imagekey)
+        print image
         if image:
             new_image = Image.objects.create(session=session, image_file=image)
         else:
             # TODO: put code here to process image
+
+            print('no image')
             raise Exception('No image provided')
     return HttpResponse('saved')
 
